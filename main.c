@@ -6,11 +6,19 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:23:16 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/13 15:33:27 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:50:00 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+int parsline(char *line)
+{
+	// check for open quote
+	
+	// check for unmatched pipes
+}
 
 int check_empty_line(char *line)
 {
@@ -41,5 +49,7 @@ int main (int ac, char **av)
 		if (check_empty_line(line)) // if the line is empty just
 		continue; // skip the rest of the loop
 		add_history(line);
+		if (!parsline(line))
+			continue;
 	}
 }
