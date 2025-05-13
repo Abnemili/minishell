@@ -1,30 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 16:36:40 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/13 15:03:13 by abnemili         ###   ########.fr       */
+/*   Created: 2025/05/13 14:56:55 by abnemili          #+#    #+#             */
+/*   Updated: 2025/05/13 15:35:33 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <stdbool.h>
-#include "libft/libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-
-
-int check_ampty_line(char *line); // same file with the main
-int is_empty(char c);
-
-
-
-
-#endif
+int is_empty(char c)
+{
+    if (c && (c == ' ' || c == '\n' || c == '\r' || c == '\f' || c == '\t' \
+	|| c == '\v'))
+        return (1);
+    return (0);
+}
