@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:36:40 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/15 14:45:32 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/15 18:19:18 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ typedef struct s_cmd
 
 enum e_type
 {
-	WORD = -1,
-	WHITE_SPACE = ' ',
+	WORD = -1,			 // ok
+	WHITE_SPACE = ' ', 	 // ok
 	NEW_LINE = '\n',
-	QUOTE = '\'',
-	DQUOTE = '\"',
+	QUOTE = '\'', 		 // ok 
+	DQUOTE = '\"', 	     // ok 
 	ESCAPE = '\\',
 	ENV = '$',
 	EXIT_STATUS,
@@ -47,8 +47,6 @@ enum e_type
 	REDIR_OUT = '>',
 	HERE_DOC,
 	DREDIR_OUT,
-	OR,
-	AND
 };
 
 enum e_state
@@ -104,6 +102,13 @@ int 	is_empty(char c);
 int 	parsline(char *line, t_data *input);
 void	init_data(t_data *data, char *line);
 
+// creat the token node
+t_elem	*create_token(char *content, enum e_type type, enum e_state state);
+void	append_token(t_elem **head, t_elem *new);
+
+void	handle_quote(const char *input, int *i, t_elem **head);
+int handle_redirections(const char *input, int i, t_elem **head);
+int handle_word(const char *input, int i, t_elem **head);
 
 
 

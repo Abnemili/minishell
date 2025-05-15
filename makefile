@@ -4,8 +4,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -Ilibft -I.
 LDFLAGS = -lreadline
 
-SRC = main.c utils.c init.c
-OBJ = main.o utils.o init.o
+SRC = main.c utils.c init.c tokens.c token_utils.c
+OBJ = main.o utils.o init.o tokens.o token_utils.o
 LIBFT = libft/libft.a
 
 # Colors for output
