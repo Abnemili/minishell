@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 14:56:55 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/14 22:06:08 by abnemili         ###   ########.fr       */
+/*   Created: 2025/05/15 14:43:15 by abnemili          #+#    #+#             */
+/*   Updated: 2025/05/15 14:55:14 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_empty(char c)
+void	init_data(t_data *data, char *line)
 {
-    if (c && (c == ' ' || c == '\n' || c == '\r' || c == '\f' || c == '\t' \
-	|| c == '\v'))
-        return (1);
-    return (0);
+	data->input = line;
+	data->head = NULL;
+	data->cmd_lst = NULL;
+	data->in = 0;
+	data->out = 1;
+	data->elem = NULL;
+	data->error = 0;
+	data->file_error = 0;
+	data->expanded = 0;
+	data->expnd = NULL;
+	data->save_error = NULL;
+	data->n_env = NULL;
 }
-int check_empty_line(t_data *data)
+
+t_elem *init_tokens(char *input)
 {
-	int	i;
-	
-	i = 0;
-	while (data->input[i] && is_empty(data->input[i]))
-		i++;
-	if (i == (int)ft_strlen(data->input))
-	{
-		free(data->input);
-		return (1);
-	}
-	return (0);	
+    
 }

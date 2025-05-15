@@ -1,18 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/05 15:29:47 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/11/01 00:01:33 by mmoumani         ###   ########.fr       */
+/*   Created: 2025/05/15 14:54:15 by abnemili          #+#    #+#             */
+/*   Updated: 2025/05/15 14:55:02 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-int	ft_isalnum(int c)
-{
-	return (ft_isdigit(c) || ft_isalpha(c));
-}

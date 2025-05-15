@@ -1,14 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quote.c                                            :+:      :+:    :+:   */
+/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 15:53:45 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/13 15:53:58 by abnemili         ###   ########.fr       */
+/*   Created: 2022/10/31 15:47:07 by mmoumani          #+#    #+#             */
+/*   Updated: 2023/04/10 22:07:02 by mmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell"
+#include "libft.h"
 
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	if (!(*lst))
+		*lst = new;
+	else
+		ft_lstlast(*lst)->next = new;
+}

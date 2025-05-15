@@ -4,9 +4,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -Ilibft -I.
 LDFLAGS = -lreadline
 
-SRC = main.c utils.c
-OBJ = main.o utils.o
-
+SRC = main.c utils.c init.c
+OBJ = main.o utils.o init.o
 LIBFT = libft/libft.a
 
 # Colors for output
@@ -17,11 +16,11 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
 	@echo "$(GREEN)Building the project...$(RESET)"
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LDFLAGS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LDFLAGS) -o $(NAME)
 	@echo "$(GREEN)Build complete!$(RESET)"
 
 $(LIBFT):
-	make -C libft
+	@make -C libft
 
 clean:
 	rm -f $(OBJ)

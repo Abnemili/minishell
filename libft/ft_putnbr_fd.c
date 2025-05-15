@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/24 23:44:34 by ozouine           #+#    #+#             */
-/*   Updated: 2024/11/14 18:42:52 by abnemili         ###   ########.fr       */
+/*   Created: 2022/10/27 19:46:48 by mmoumani          #+#    #+#             */
+/*   Updated: 2022/11/06 22:13:13 by mmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,20 @@
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	unsigned int	nb;
+	long	temp;
 
-	if (fd < 0)
-		return ;
-	nb = n;
 	if (n < 0)
 	{
 		ft_putchar_fd('-', fd);
-		nb = -n;
+		temp = (-(long) n);
 	}
-	if (nb < 10)
-		ft_putchar_fd((nb + '0'), fd);
+	else
+		temp = n;
+	if (temp < 10)
+		ft_putchar_fd(temp + '0', fd);
 	else
 	{
-		ft_putnbr_fd((nb / 10), fd);
-		ft_putnbr_fd((nb % 10), fd);
+		ft_putnbr_fd(temp / 10, fd);
+		ft_putchar_fd(temp % 10 + '0', fd);
 	}
 }

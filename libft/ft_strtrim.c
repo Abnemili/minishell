@@ -3,31 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/23 21:47:38 by ozouine           #+#    #+#             */
-/*   Updated: 2024/11/18 15:38:47 by abnemili         ###   ########.fr       */
+/*   Created: 2022/10/22 14:55:37 by mmoumani          #+#    #+#             */
+/*   Updated: 2022/11/01 01:20:29 by mmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+static int	in(char const *s, char c)
 {
 	int	i;
-	int	l;
 
 	i = 0;
-	if (!s1)
-		return (NULL);
-	if (!set)
-		return ((char *)s1);
-	while (s1[i] && ft_strchr(set, s1[i]))
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (1);
 		i++;
-	s1 += i;
-	l = ft_strlen(s1) - 1;
-	while (l > 0 && ft_strchr(set, s1[l]))
-		l--;
-	s1 = ft_substr(s1, 0, l + 1);
-	return ((char *)s1);
+	}
+	return (0);
+}
+
+static int	ft_start(char const *s1, char const *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i])
+	{
+		if (!in(s2, s1[i]))
+			return (i);
+		i++;
+	}
+	return (i);
+}
+
+static int	ft_end(char const *s1, char const *s2)
+{
+	int	l1;
+
+	l1 = ft_strlen(s1);
+	while (l1 - 1 >= 0)
+	{
+		if (!in(s2, s1[l1 - 1]))
+			return (l1);
+		l1--;
+	}
+	return (l1);
+}
+
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	int	start;
+	int	end;
+
+	if (!s1 || !set)
+		return (NULL);
+	start = ft_start(s1, set);
+	end = ft_end(s1, set);
+	return (ft_substr(s1, start, end - start));
 }

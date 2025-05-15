@@ -3,59 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 14:55:14 by abnemili          #+#    #+#             */
-/*   Updated: 2024/11/18 14:18:16 by abnemili         ###   ########.fr       */
+/*   Created: 2022/10/26 01:40:28 by mmoumani          #+#    #+#             */
+/*   Updated: 2022/11/04 20:11:36 by mmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	len_n(int nb)
+static int	ft_nlen(long n)
 {
-	int	l;
+	int	i;
 
-	l = 0;
-	if (nb <= 0)
-		l++;
-	while (nb)
+	i = 1;
+	if (n < 0)
+		n *= (-1);
+	while (n > 9)
 	{
-		nb /= 10;
-		l++;
+		n /= 10;
+		i++;
 	}
-	return (l);
+	return (i);
 }
 
-static char	*zero(char *r)
+static char	*negative_itoa(int nlen, long nlong, char *r)
 {
-	r[0] = '0';
+	r = malloc((nlen + 2) * sizeof(char));
+	if (!r)
+		return (NULL);
+	r[nlen + 1] = '\0';
+	nlong *= (-1);
+	while (nlen)
+	{
+		r[nlen] = (nlong % 10) + 48;
+		nlong /= 10;
+		nlen--;
+	}
+	r[nlen] = '-';
+	return (r);
+}
+
+static char	*positive_itoa(int nlen, long nlong, char *r)
+{
+	r = malloc((nlen + 1) * sizeof(char));
+	if (!r)
+		return (NULL);
+	r[nlen] = '\0';
+	while (nlen)
+	{
+		r[nlen - 1] = (nlong % 10) + 48;
+		nlong /= 10;
+		nlen--;
+	}
 	return (r);
 }
 
 char	*ft_itoa(int n)
 {
+	int		nlen;
+	long	nlong;
 	char	*r;
-	int		len;
-	long	nbr;
 
-	nbr = (long)n;
-	len = len_n(nbr);
-	r = malloc(sizeof(char) * (len + 1));
-	if (r == NULL)
-		return (NULL);
-	r[len] = '\0';
-	if (nbr == 0)
-		return (zero(r));
-	else if (nbr < 0)
-	{
-		r[0] = '-';
-		nbr *= -1;
-	}
-	while (nbr)
-	{
-		r[--len] = (nbr % 10) + '0';
-		nbr /= 10;
-	}
+	r = NULL;
+	nlong = (long)n;
+	nlen = ft_nlen(n);
+	if (nlong < 0)
+		r = negative_itoa(nlen, nlong, r);
+	else
+		r = positive_itoa(nlen, nlong, r);
 	return (r);
 }

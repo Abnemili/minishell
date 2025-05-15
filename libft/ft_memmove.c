@@ -3,35 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 15:02:05 by abnemili          #+#    #+#             */
-/*   Updated: 2024/11/18 14:33:43 by abnemili         ###   ########.fr       */
+/*   Created: 2022/10/13 11:04:14 by mmoumani          #+#    #+#             */
+/*   Updated: 2022/11/05 08:08:13 by mmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	unsigned char		*d;
-	unsigned const char	*s;
+	char	*d;
+	char	*s;
+	size_t	i;
 
-	if (dest == NULL && src == NULL)
-		return (NULL);
-	d = (unsigned char *)dest;
-	s = (unsigned const char *)src;
-	if (d > s && d < s + n)
+	d = (char *)dst;
+	s = (char *)src;
+	if (!s && !d)
+		return ("");
+	if (s == d)
+		return (s);
+	i = 0;
+	if (d > s)
 	{
-		d += n - 1;
-		s += n - 1;
-		while (n--)
-			*(d--) = *(s--);
+		while (len-- > 0)
+			d[len] = s[len];
 	}
 	else
 	{
-		while (n--)
-			*d++ = *s++;
+		while (i < len)
+		{
+			d[i] = s[i];
+			i++;
+		}
 	}
-	return (dest);
+	return (dst);
 }
