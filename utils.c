@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:56:55 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/14 22:06:08 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:50:44 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,32 @@ int check_empty_line(t_data *data)
 		return (1);
 	}
 	return (0);	
+}
+
+char *ft_strncpy(char *dest, const char *src, size_t n)
+{
+    size_t i;
+
+    i = 0;
+    while (i < n && src[i])
+    {
+        dest[i] = src[i];
+        i++;
+    }
+    while (i < n)
+    {
+        dest[i] = '\0';
+        i++;
+    }
+    return dest;
+}
+
+char *ft_strndup(const char *s, size_t n)
+{
+    char *dup = malloc(n + 1);
+    if (!dup)
+        return NULL;
+    ft_strncpy(dup, s, n);
+    dup[n] = '\0';
+    return dup;
 }

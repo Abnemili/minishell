@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:23:16 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/15 14:41:54 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:37:48 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ int	main(int ac, char **av)
 {
 	t_data	data;
 	char	*line;
-
+	t_elem *token;
+	
 	(void)ac;
 	(void)av;
-
+	
 	while (1)
 	{
 		line = readline("minishell> ");
@@ -28,20 +29,12 @@ int	main(int ac, char **av)
 			printf("exit\n");
 			break;
 		}
-
-		init_data(&data, line); // initialize struct after reading input
-
+		init_data(&data, line);
 		if (check_empty_line(&data))
-			continue;
-
+		continue;
 		add_history(data.input);
-
-		// TODO: parsing/exec logic
-		// if (!parse_line(&data))
-		//     continue;
-
-		// cleanup if needed
-		free(data.input);
-	}
-	return (0);
+		token = init_tokens(line);
+		print_tokens(token);
+		add_history(data.input);
+    }
 }

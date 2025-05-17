@@ -6,41 +6,58 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:07:59 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/15 18:25:42 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:16:42 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "minishell.h"
+
+int handle_space(const char *input, int *i, t_elem **head)
+{
+    int start = *i;
+    while(input[(*i)] == ' ' ||  input[(*i)] == '\t')
+        (*i)++;
+    char *space = strndup(input + start,(unsigned long) i - start);
+    append_token(head, create_token(space, WHITE_SPACE, GENERAL));
+    free(space);
+    return (*i);
+}
 
 int handle_word(const char *input, int i, t_elem **head)
 {
-    int start;
-    char *content; // Fixed: `char content;` should be `char *content`
+    int start = i;
 
-    start = i;
-    while (input[i] && input[i] != ' ' && input[i] != '|' &&
-            input[i] != '<' && input[i] != '>' &&
-            input[i] != '\'' && input[i] != '\"')
+    while (input[i] && input[i] != ' ' && input[i] != '\t' &&
+           input[i] != '|' && input[i] != '<' && input[i] != '>' &&
+           input[i] != '\'' && input[i] != '\"')
         i++;
-    content = strndup(input + start, i - start);
-    append_token(head, create_token(content, WORD, GENERAL));
-    free(content);
+
+    if (i > start)
+    {
+        char *content = strndup(input + start, i - start);
+        if (!content)
+            return i;  // error handling if allocation fails
+
+        append_token(head, create_token(content, WORD, GENERAL));
+        free(content);  // ✅ safe to free because `create_token` makes its own copy
+    }
+
     return i;
 }
+
 
 int handle_redirections(const char *input, int i, t_elem **head)
 {
     enum e_type type;
-    int         start;
-    char        *content;
+    int start = i;
 
-    start = i;
-    if (input[i] == '>' && input[i + 1] == '>')
+    if (input[i] == '>' && input[i + 1] && input[i + 1] == '>')
     {
         type = DREDIR_OUT;
         i += 2;
     }
-    else if (input[i] == '<' && input[i + 1] == '<')
+    else if (input[i] == '<' && input[i + 1] && input[i + 1] == '<')
     {
         type = HERE_DOC;
         i += 2;
@@ -50,77 +67,78 @@ int handle_redirections(const char *input, int i, t_elem **head)
         type = REDIR_OUT;
         i++;
     }
-    else 
+    else
     {
         type = REDIR_IN;
         i++;
     }
-    content = strndup(input + start, i - start);
-    append_token(head, create_token(content, type, GENERAL)); // Fixed: `creat_token` should be `create_token`
+
+    char *content = strndup(input + start, i - start);
+    if (!content)
+        return i;
+    append_token(head, create_token(content, type, GENERAL));
     free(content);
     return i;
 }
 
 void handle_quote(const char *input, int *i, t_elem **head)
 {
-    int start;
-    char quote;
-    char *content;
-    enum e_state state;
-    enum e_type type;
-
-    start = *i;
-    quote = input[(*i)++];
-    if (quote == '\'')
-    {
-        state = IN_QUOTE;
-        type = QUOTE;
-    }
-    else 
-    {
-        state = IN_DQUOTE;
-        type = DQUOTE;
-    }
+    int start = *i;
+    char quote = input[(*i)++];
+    enum e_state state = (quote == '\'') ? IN_QUOTE : IN_DQUOTE;
+    enum e_type type = (quote == '\'') ? QUOTE : DQUOTE;
 
     while (input[*i] && input[*i] != quote)
         (*i)++;
 
     if (input[*i] == quote)
-        (*i)++;
+        (*i)++;  // skip closing quote
 
-    content = strndup(input + start, *i - start);
-    append_token(head, create_token(content, type, state)); // Fixed: `creat_token` should be `create_token`
+    char *content = strndup(input + start, *i - start);
+    if (!content)
+        return;
+    append_token(head, create_token(content, type, state));
     free(content);
 }
 
 t_elem *init_tokens(char *input)
 {
-    t_elem          *head;
-    enum e_state    state;
-    int             i;
+    t_elem *head = NULL;
+    int i = 0;
 
-    i = 0;
-    head = NULL;
-    state = GENERAL;
     while (input[i])
     {
         if (input[i] == ' ' || input[i] == '\t')
         {
-            i++;   // Fixed typo: "id" -> "is", "skipe" -> "skip"
-            continue; 
-        }    
+            handle_space(input, &i, &head);
+            continue;
+        }
         else if (input[i] == '\'' || input[i] == '\"')
-            handle_quote(input, &i, &head);  // Fixed typo: "tokenis" -> "tokenize"
+        {
+            handle_quote(input, &i, &head);
+            continue;
+        }
         else if (input[i] == '>' || input[i] == '<')
-            handle_redirections(input, i, &head); // Fixed typo: "tokenis" -> "tokenize"
+        {
+            i = handle_redirections(input, i, &head);
+            continue;
+        }
         else if (input[i] == '|')
         {
-            char *content = strndup("|", 1); // Fixed: `strndup("|")` should be `strndup("|", 1)`
-            append_token(&head, create_token(content, PIPE_LINE, GENERAL)); // Fixed: incorrect argument order
+            char *content = strndup("|", 1);
+            if (content)
+            {
+                append_token(&head, create_token(content, PIPE_LINE, GENERAL));
+                free(content);
+            }
             i++;
+            continue;
         }
         else
-            handle_word(input, i, &head); // Fixed typo: "genreal" -> "general"
+        {
+            i = handle_word(input, i, &head);
+            continue;
+        }
     }
     return head;
 }
