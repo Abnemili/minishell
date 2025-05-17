@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:36:40 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/17 13:56:34 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:35:54 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,19 @@ typedef struct s_cmd
 
 enum e_type
 {
-	WORD = 11,   
-	WHITE_SPACE = ' ', 
+	WORD = 1,   //
+	WHITE_SPACE = ' ',// 
+	QUOTE = '\'', 	//	
+	DQUOTE = '\"', 	  //  
+	ENV = '$', // 
+	PIPE_LINE = '|', //
+	REDIR_IN = '<', //
+	REDIR_OUT = '>', // 
+	HERE_DOC, //
+	DREDIR_OUT,//
 	NEW_LINE = '\n',
-	QUOTE = '\'', 		
-	DQUOTE = '\"', 	    
-	ESCAPE = '\\',
-	ENV = '$',
 	EXIT_STATUS,
-	PIPE_LINE = '|',
-	REDIR_IN = '<',
-	REDIR_OUT = '>',
-	HERE_DOC,
-	DREDIR_OUT,
+	ESCAPE = '\\',
 };
 
 enum e_state
@@ -111,7 +111,11 @@ int handle_redirections(const char *input, int i, t_elem **head);
 int handle_word(const char *input, int i, t_elem **head);
 void print_tokens(t_elem *head);
 const char *get_type_str(enum e_type type);
+int handle_env(const char *input, int *i, t_elem **head);
 
 
+
+// helper functions 
+char *ft_strndup(const char *s, size_t n);
 
 #endif

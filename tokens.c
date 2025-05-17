@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:07:59 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/17 15:16:42 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:24:20 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@
 int handle_space(const char *input, int *i, t_elem **head)
 {
     int start = *i;
-    while(input[(*i)] == ' ' ||  input[(*i)] == '\t')
+    while (input[*i] == ' ' || input[*i] == '\t')
         (*i)++;
-    char *space = strndup(input + start,(unsigned long) i - start);
+
+    char *space = strndup(input + start, *i - start);
     append_token(head, create_token(space, WHITE_SPACE, GENERAL));
     free(space);
-    return (*i);
+
+    return *i;
 }
 
 int handle_word(const char *input, int i, t_elem **head)
@@ -110,7 +112,7 @@ t_elem *init_tokens(char *input)
     {
         if (input[i] == ' ' || input[i] == '\t')
         {
-            handle_space(input, &i, &head);
+            i = handle_space(input, &i, &head);
             continue;
         }
         else if (input[i] == '\'' || input[i] == '\"')
@@ -122,6 +124,11 @@ t_elem *init_tokens(char *input)
         {
             i = handle_redirections(input, i, &head);
             continue;
+        }
+        else if (input[i] == '$')
+        {
+            i = handle_env(input, &i, &head); // handle the $ sin 
+                continue;
         }
         else if (input[i] == '|')
         {
