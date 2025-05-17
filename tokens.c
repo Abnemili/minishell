@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:07:59 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/17 20:24:20 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:43:03 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int handle_space(const char *input, int *i, t_elem **head)
     while (input[*i] == ' ' || input[*i] == '\t')
         (*i)++;
 
-    char *space = strndup(input + start, *i - start);
+    char *space = ft_strndup(input + start, *i - start);
     append_token(head, create_token(space, WHITE_SPACE, GENERAL));
     free(space);
 
@@ -37,7 +37,7 @@ int handle_word(const char *input, int i, t_elem **head)
 
     if (i > start)
     {
-        char *content = strndup(input + start, i - start);
+        char *content = ft_strndup(input + start, i - start);
         if (!content)
             return i;  // error handling if allocation fails
 
@@ -75,7 +75,7 @@ int handle_redirections(const char *input, int i, t_elem **head)
         i++;
     }
 
-    char *content = strndup(input + start, i - start);
+    char *content = ft_strndup(input + start, i - start);
     if (!content)
         return i;
     append_token(head, create_token(content, type, GENERAL));
@@ -96,7 +96,7 @@ void handle_quote(const char *input, int *i, t_elem **head)
     if (input[*i] == quote)
         (*i)++;  // skip closing quote
 
-    char *content = strndup(input + start, *i - start);
+    char *content = ft_strndup(input + start, *i - start);
     if (!content)
         return;
     append_token(head, create_token(content, type, state));
@@ -132,7 +132,7 @@ t_elem *init_tokens(char *input)
         }
         else if (input[i] == '|')
         {
-            char *content = strndup("|", 1);
+            char *content = ft_strndup("|", 1);
             if (content)
             {
                 append_token(&head, create_token(content, PIPE_LINE, GENERAL));
