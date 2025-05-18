@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:36:40 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/17 20:35:54 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/18 14:13:25 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,9 @@ int 	is_empty(char c);
 int 	parsline(char *line, t_data *input);
 void	init_data(t_data *data, char *line);
 
+
+/// eceutin structs 
+
 // creat the token node
 t_elem	*create_token(char *content, enum e_type type, enum e_state state);
 void	append_token(t_elem **head, t_elem *new);
@@ -112,7 +115,8 @@ int handle_word(const char *input, int i, t_elem **head);
 void print_tokens(t_elem *head);
 const char *get_type_str(enum e_type type);
 int handle_env(const char *input, int *i, t_elem **head);
-
+int check_syntax(t_elem *token);
+int is_redirection(enum e_type  type);
 
 
 // helper functions 

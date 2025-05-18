@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:23:16 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/17 14:37:48 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/18 14:15:35 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ int	main(int ac, char **av)
 		continue;
 		add_history(data.input);
 		token = init_tokens(line);
+		
+		if (!check_syntax(token))
+		continue;
 		print_tokens(token);
 		add_history(data.input);
     }
