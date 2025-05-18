@@ -6,11 +6,10 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:07:59 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/17 20:43:03 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:49:25 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "minishell.h"
 
 int handle_space(const char *input, int *i, t_elem **head)
@@ -83,12 +82,24 @@ int handle_redirections(const char *input, int i, t_elem **head)
     return i;
 }
 
+
 void handle_quote(const char *input, int *i, t_elem **head)
 {
     int start = *i;
     char quote = input[(*i)++];
-    enum e_state state = (quote == '\'') ? IN_QUOTE : IN_DQUOTE;
-    enum e_type type = (quote == '\'') ? QUOTE : DQUOTE;
+    enum e_state state;
+    enum e_type type;
+
+    if (quote == '\'')
+    {
+        state = IN_QUOTE;
+        type = QUOTE;
+    }
+    else
+    {
+        state = IN_DQUOTE;
+        type = DQUOTE;
+    }
 
     while (input[*i] && input[*i] != quote)
         (*i)++;
@@ -99,9 +110,13 @@ void handle_quote(const char *input, int *i, t_elem **head)
     char *content = ft_strndup(input + start, *i - start);
     if (!content)
         return;
+
     append_token(head, create_token(content, type, state));
     free(content);
 }
+
+
+
 
 t_elem *init_tokens(char *input)
 {
