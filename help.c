@@ -23,6 +23,8 @@ int check_syntax(t_elem *token)
 {
     t_elem *curr = token;
     t_elem *prev = NULL;
+    int quote_count = 0;
+    int dquote_count = 0;
 
     while (curr)
     {
@@ -32,14 +34,10 @@ int check_syntax(t_elem *token)
             continue;
         }
 
-        if ((curr->type == QUOTE || curr->type == DQUOTE) &&
-        curr->state != GENERAL &&
-        curr->content[ft_strlen(curr->content) - 1] != curr->content[0])
-        {
-            printf("syntax error: unclosed quote detected\n");
-            return 0;
-        }
-
+        if (curr->type == QUOTE)
+            quote_count++;
+        else if (curr->type == DQUOTE)
+            dquote_count++;
         if (curr->type == PIPE_LINE)
         {
             if (!prev || prev->type == PIPE_LINE)
@@ -66,6 +64,11 @@ int check_syntax(t_elem *token)
     if (prev && prev->type == PIPE_LINE)
     {
         printf("syntax error: pipe at the end\n");
+        return 0;
+    }
+    if (quote_count % 2 != 0 || dquote_count % 2 != 0)
+    {
+        printf("syntax error: unclosed quote detected\n");
         return 0;
     }
 

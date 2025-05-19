@@ -85,35 +85,65 @@ int handle_redirections(const char *input, int i, t_elem **head)
 
 void handle_quote(const char *input, int *i, t_elem **head)
 {
-    int start = *i;
     char quote = input[(*i)++];
-    enum e_state state;
-    enum e_type type;
+    enum e_state state = (quote == '\'') ? IN_QUOTE : IN_DQUOTE;
+    enum e_type type = (quote == '\'') ? QUOTE : DQUOTE;
+    int start = *i;
 
-    if (quote == '\'')
-    {
-        state = IN_QUOTE;
-        type = QUOTE;
-    }
-    else
-    {
-        state = IN_DQUOTE;
-        type = DQUOTE;
-    }
+    // Create token for opening quote
+    char quote_str[2] = {quote, '\0'};
+    append_token(head, create_token(ft_strdup(quote_str), type, GENERAL));
 
+    // Collect the inside content
     while (input[*i] && input[*i] != quote)
         (*i)++;
 
+    if (*i > start)
+    {
+        char *content = ft_strndup(input + start, *i - start);
+        append_token(head, create_token(content, WORD, state));
+        free(content);
+    }
+
+    // If quote is closed, add closing quote as token
     if (input[*i] == quote)
-        (*i)++;  // skip closing quote
-
-    char *content = ft_strndup(input + start, *i - start);
-    if (!content)
-        return;
-
-    append_token(head, create_token(content, type, state));
-    free(content);
+    {
+        (*i)++;
+        append_token(head, create_token(ft_strdup(quote_str), type, GENERAL));
+    }
 }
+
+// void handle_quote(const char *input, int *i, t_elem **head)
+// {
+//     int start = *i;
+//     char quote = input[(*i)++];
+//     enum e_state state;
+//     enum e_type type;
+
+//     if (quote == '\'')
+//     {
+//         state = IN_QUOTE;
+//         type = QUOTE;
+//     }
+//     else
+//     {
+//         state = IN_DQUOTE;
+//         type = DQUOTE;
+//     }
+//     char quote_str[2] = 
+//     while (input[*i] && input[*i] != quote)
+//         (*i)++;
+
+//     if (input[*i] == quote)
+//         (*i)++;  // skip closing quote
+
+//     char *content = ft_strndup(input + start, *i - start);
+//     if (!content)
+//         return;
+
+//     append_token(head, create_token(content, type, state));
+//     free(content);
+// }
 
 
 
