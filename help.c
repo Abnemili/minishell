@@ -23,8 +23,7 @@ int check_syntax(t_elem *token)
 {
     t_elem *curr = token;
     t_elem *prev = NULL;
-    int quote_count = 0;
-    int dquote_count = 0;
+    enum e_state state = GENERAL;
 
     while (curr)
     {
@@ -35,30 +34,54 @@ int check_syntax(t_elem *token)
         }
 
         if (curr->type == QUOTE)
-            quote_count++;
+        {
+            if (state == GENERAL)
+                state = IN_QUOTE;
+            else if (state == IN_QUOTE)
+                state = GENERAL;
+            // single quotes inside double quotes ignored
+        }
         else if (curr->type == DQUOTE)
-            dquote_count++;
-        if (curr->type == PIPE_LINE)
         {
-            if (!prev || prev->type == PIPE_LINE)
+            if (state == GENERAL)
+                state = IN_DQUOTE;
+            else if (state == IN_DQUOTE)
+                state = GENERAL;
+            // double quotes inside single quotes ignored
+        }
+
+        // Only check pipes and redirection outside quotes
+        if (state == GENERAL)
+        {
+            if (curr->type == PIPE_LINE)
             {
-                printf("syntax error: unexpected pipe '|'\n");
-                return 0;
+                if (!prev || prev->type == PIPE_LINE)
+                {
+                    printf("syntax error: unexpected pipe '|'\n");
+                    return 0;
+                }
+            }
+            if (is_redirection(curr->type))
+            {
+                t_elem *next = curr->next;
+                while (next && next->type == WHITE_SPACE)
+                    next = next->next;
+                if (!next || is_redirection(next->type) || next->type == PIPE_LINE)
+                {
+                    printf("syntax error: unexpected token after redirection\n");
+                    return 0;
+                }
             }
         }
-        if (is_redirection(curr->type))
-        {
-            t_elem *next = curr->next;
-            while (next && next->type == WHITE_SPACE)
-                next = next->next;
-            if (!next || is_redirection(next->type) || next->type == PIPE_LINE)
-            {
-                printf("syntax error: unexpected token after redirection\n");
-                return 0;
-            }
-        }
+
         prev = curr;
         curr = curr->next;
+    }
+
+    if (state != GENERAL)
+    {
+        printf("syntax error: unclosed quote detected\n");
+        return 0;
     }
 
     if (prev && prev->type == PIPE_LINE)
@@ -66,11 +89,19 @@ int check_syntax(t_elem *token)
         printf("syntax error: pipe at the end\n");
         return 0;
     }
-    if (quote_count % 2 != 0 || dquote_count % 2 != 0)
-    {
-        printf("syntax error: unclosed quote detected\n");
-        return 0;
-    }
 
     return 1;
+}
+void expand_tokens(t_elem *tokens, char **envp)
+{
+    while (tokens)
+    {
+        if (tokens->type == WORD || tokens->type == ENV) // optional
+        {
+            char *expanded = expnade_variable(tokens->content, envp, tokens->state);
+            free(tokens->content);
+            tokens->content = expanded;
+        }
+        tokens = tokens->next;
+    }
 }

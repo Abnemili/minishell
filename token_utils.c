@@ -84,11 +84,44 @@ void print_tokens(t_elem *head)
 }
 int handle_env(const char *input, int *i, t_elem **head)
 {
-    // int start = *i;
-    while (input[(*i)] == '$')
-        (*i)++;
-    char *content = ft_strndup("$", 1);
-    append_token(head, create_token(content, ENV, GENERAL));
-    free(content);
-    return (*i);
+    int start = *i;
+
+    if (input[*i] == '$')
+    {
+        (*i)++;  // skip '$'
+
+        // Case 1: `$` followed by end of input or space
+        if (input[*i] == '\0' || input[*i] == ' ')
+        {
+            // Treat `$` as a literal character
+            char *content = ft_strndup("$", 1);
+            append_token(head, create_token(content, WORD, GENERAL));
+            free(content);
+            return *i;
+        }
+
+        // Case 2: valid variable name starts
+        if (ft_isalpha(input[*i]) || input[*i] == '_')
+        {
+           // int var_start = *i;
+            while (ft_isalnum(input[*i]) || input[*i] == '_')
+                (*i)++;
+
+            int len = *i - start;
+            char *content = ft_strndup(&input[start], len);  // includes the $
+            append_token(head, create_token(content, ENV, GENERAL));
+            free(content);
+            return *i;
+        }
+
+        // Case 3: `$` followed by invalid character (like a digit or symbol)
+        // You can choose to treat this as literal or syntax error
+        char *content = ft_strndup("$", 1);
+        append_token(head, create_token(content, WORD, GENERAL));
+        free(content);
+        return *i;
+    }
+
+    return *i;
 }
+

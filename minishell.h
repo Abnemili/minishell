@@ -22,13 +22,21 @@
 
 
 
-typedef struct s_cmd
-{
-	int				in_file;
-	int				out_file;
-	char			**full_cmd;
-	struct s_cmd	*next;
-}					t_cmd;
+typedef struct s_command {
+    char **argv;            // Command name + args
+    char *input_file;       // Input redirection file
+    char *output_file;      // Output redirection file
+    int append;             // Append mode for output >>
+    struct s_command *next; // For pipelines
+} t_cmd;
+
+// typedef struct s_cmd
+// {
+// 	int				in_file;
+// 	int				out_file;
+// 	char			**full_cmd;
+// 	struct s_cmd	*next;
+// }					t_cmd;
 
 // lexer 2 function
 
@@ -117,6 +125,14 @@ const char *get_type_str(enum e_type type);
 int handle_env(const char *input, int *i, t_elem **head);
 int check_syntax(t_elem *token);
 int is_redirection(enum e_type  type);
+
+// expanding
+
+void expand_tokens(t_elem *tokens, char **envp);
+char *expnade_variable(const char *input, char **env, int state);
+char *get_env_value(const char *var_name, char **env);
+
+
 
 
 // helper functions 

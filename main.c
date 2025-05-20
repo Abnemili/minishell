@@ -23,7 +23,7 @@ int	main(int ac, char **av)
 	
 	while (1)
 	{
-		line = readline("minishell> ");
+		line = readline("brk hna ");
 		if (!line)
 		{
 			printf("exit\n");

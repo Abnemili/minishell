@@ -113,40 +113,6 @@ void handle_quote(const char *input, int *i, t_elem **head)
     }
 }
 
-// void handle_quote(const char *input, int *i, t_elem **head)
-// {
-//     int start = *i;
-//     char quote = input[(*i)++];
-//     enum e_state state;
-//     enum e_type type;
-
-//     if (quote == '\'')
-//     {
-//         state = IN_QUOTE;
-//         type = QUOTE;
-//     }
-//     else
-//     {
-//         state = IN_DQUOTE;
-//         type = DQUOTE;
-//     }
-//     char quote_str[2] = 
-//     while (input[*i] && input[*i] != quote)
-//         (*i)++;
-
-//     if (input[*i] == quote)
-//         (*i)++;  // skip closing quote
-
-//     char *content = ft_strndup(input + start, *i - start);
-//     if (!content)
-//         return;
-
-//     append_token(head, create_token(content, type, state));
-//     free(content);
-// }
-
-
-
 
 t_elem *init_tokens(char *input)
 {
