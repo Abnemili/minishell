@@ -1,0 +1,28 @@
+1 . read line          			// done 
+2 . check if empty     			// done
+3 . lexer (tokenizing)
+	--> chekck the space token
+4 . process the input   
+5 . check syntax error  		// in progress
+6 . parser file
+	--> in porgres : 
+		. parse pipe line:
+			--> parse commands 			// done
+				--> parse arguments		// in progress
+					--> count command arguments		// done
+					--> allocate command arguments 	// done
+					--> process word token          // done
+					--> process redirectoins        // not touched
+					------> handle the in file // done
+					------> handle the out file //done
+					------> handle the dredirectiono append // done 
+					------> handle heredoc ??
+
+current task : process the redirection and handle every single one of Them
+
+
+
+
+
+error :
+input : only space char 

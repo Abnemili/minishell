@@ -3,35 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: handler <handler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/07 13:30:46 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/11/01 01:15:14 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/11/08 10:09:19 by handler           #+#    #+#             */
+/*   Updated: 2022/11/09 14:18:46 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(const char *s, int c)
+char	*ft_strrchr(const char *string, int searchedChar)
 {
-	int		i;
-	int		j;
-	char	m;
-	size_t	len;
+	int	i;
 
 	i = 0;
-	j = -1;
-	m = c;
-	len = ft_strlen(s);
-	if (m == s[len])
-		return ((char *)&s[len]);
-	while (s[i])
-	{
-		if (s[i] == m)
-			j = i;
-		if (s[i + 1] == '\0' && j != -1)
-			return ((char *)&s[j]);
-		i++;
-	}
+	while (string[i])
+		++i;
+	if (searchedChar == 0)
+		return ((char *)&string[i]);
+	while (--i >= 0)
+		if (string[i] == (unsigned char)searchedChar)
+			return ((char *)&string[i]);
 	return (NULL);
 }
+
+// int main(void)
+// {
+// 	printf("%s\n", ft_strrchr("je cherche une lettre", 'e'));
+// 	printf("%s\n", strrchr("je cherche une lettre", 'e'));
+// 	return 0;
+// }

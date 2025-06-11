@@ -3,28 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: handler <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 15:02:23 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/11/01 01:48:56 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/08/14 12:39:46 by handler           #+#    #+#             */
+/*   Updated: 2022/08/15 11:00:13 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dest, char const *src, size_t size)
 {
-	size_t	i;
+	unsigned int	i;
 
 	i = 0;
-	if (dstsize)
+	if (size != 0)
 	{
-		while (src[i] && i < dstsize - 1)
+		while (src[i] && i < (size - 1))
 		{
-			dst[i] = src[i];
+			dest[i] = src[i];
 			i++;
 		}
-		dst[i] = '\0';
+		dest[i] = '\0';
 	}
-	return (ft_strlen(src));
+	while (src[i])
+		i++;
+	return (i);
 }
+
+// #include <stdio.h>
+
+// int main()
+// {
+// 	char dst[] = "sjhgdfjhsdgfjhsdgfjhsgfhjsdgfjhsdgf";
+// 	char src[] = "Bonjour je suis un super beau gosse";
+// 	printf("%ld\n", ft_strlcpy(dst, src, 20));
+// 	return 0;
+// }

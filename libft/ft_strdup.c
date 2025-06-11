@@ -3,31 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: handler <handler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/21 21:46:21 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/10/21 21:46:23 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/08/22 09:49:27 by handler           #+#    #+#             */
+/*   Updated: 2022/11/09 13:54:42 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *src)
 {
-	char	*ptr;
+	char	*new;
 	int		i;
-	int		len;
 
-	len = ft_strlen(s1);
 	i = 0;
-	ptr = malloc((len + 1) * sizeof(char));
-	if (!ptr)
-		return (NULL);
-	while (s1[i])
-	{
-		ptr[i] = s1[i];
+	while (src[i])
 		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
+	new = malloc(sizeof(char) * (i + 1));
+	if (!new)
+		return (NULL);
+	i = -1;
+	while (src[++i])
+		new[i] = src[i];
+	new[i] = '\0';
+	return (new);
 }
+
+// int main(void)
+// {
+	// printf("%s\n", ft_strdup("une chaine de characteres."));
+	// return 0;
+// }

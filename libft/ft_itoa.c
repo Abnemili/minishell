@@ -3,74 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: handler <handler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/26 01:40:28 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/11/04 20:11:36 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/11/10 11:03:24 by handler           #+#    #+#             */
+/*   Updated: 2022/11/11 14:16:58 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_nlen(long n)
+static int	count_nbr(int nbr)
 {
-	int	i;
+	int				count;
+	unsigned int	n;
 
-	i = 1;
-	if (n < 0)
-		n *= (-1);
-	while (n > 9)
+	count = 1;
+	if (nbr < 0)
+	{
+		n = -nbr;
+		++count;
+	}
+	else
+		n = nbr;
+	while (n >= 10)
 	{
 		n /= 10;
-		i++;
+		++count;
 	}
-	return (i);
-}
-
-static char	*negative_itoa(int nlen, long nlong, char *r)
-{
-	r = malloc((nlen + 2) * sizeof(char));
-	if (!r)
-		return (NULL);
-	r[nlen + 1] = '\0';
-	nlong *= (-1);
-	while (nlen)
-	{
-		r[nlen] = (nlong % 10) + 48;
-		nlong /= 10;
-		nlen--;
-	}
-	r[nlen] = '-';
-	return (r);
-}
-
-static char	*positive_itoa(int nlen, long nlong, char *r)
-{
-	r = malloc((nlen + 1) * sizeof(char));
-	if (!r)
-		return (NULL);
-	r[nlen] = '\0';
-	while (nlen)
-	{
-		r[nlen - 1] = (nlong % 10) + 48;
-		nlong /= 10;
-		nlen--;
-	}
-	return (r);
+	return (count);
 }
 
 char	*ft_itoa(int n)
 {
-	int		nlen;
-	long	nlong;
-	char	*r;
+	char			*str;
+	int				i;
+	unsigned int	t;
 
-	r = NULL;
-	nlong = (long)n;
-	nlen = ft_nlen(n);
-	if (nlong < 0)
-		r = negative_itoa(nlen, nlong, r);
+	i = count_nbr(n);
+	str = malloc(sizeof(char) * (i + 1));
+	if (!str)
+		return (NULL);
+	if (n < 0)
+		t = -n;
 	else
-		r = positive_itoa(nlen, nlong, r);
-	return (r);
+		t = n;
+	str[i] = '\0';
+	while (--i >= 0)
+	{
+		str[i] = (t % 10) + 48;
+		t /= 10;
+	}
+	if (n < 0)
+		str[0] = '-';
+	return (str);
 }
+
+// int main()
+// {
+//     printf("%s\n", ft_itoa(-123456789));
+//     printf("%s\n", ft_itoa(-2147483648));
+//     printf("%s\n", ft_itoa(2147483647));
+// }

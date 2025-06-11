@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: handler <handler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/21 17:50:17 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/11/04 20:40:11 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/11/07 18:12:49 by handler           #+#    #+#             */
+/*   Updated: 2022/11/09 13:54:42 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	void	*ptr;
+	size_t			i;
+	unsigned char	*tmp;
 
-	if (count && size > SIZE_MAX / count)
+	if (count != 0 && size != 0 && size > 2147483647 / count)
 		return (NULL);
-	ptr = malloc(count * size);
-	if (!ptr)
-		return (0);
-	ft_bzero(ptr, count * size);
-	return (ptr);
+	i = -1;
+	tmp = malloc(count * size);
+	if (!tmp)
+		return (NULL);
+	while (++i < count * size)
+		tmp[i] = 0;
+	return (tmp);
 }

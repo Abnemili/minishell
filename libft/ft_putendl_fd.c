@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: handler <handler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 17:42:16 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/11/01 00:12:40 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/11/09 23:55:36 by handler           #+#    #+#             */
+/*   Updated: 2022/11/11 14:03:01 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,15 @@
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	if (s)
-	{
-		ft_putstr_fd(s, fd);
-		ft_putchar_fd('\n', fd);
-	}
+	int	i;
+
+	i = -1;
+	while (s[++i])
+		write(fd, &s[i], 1);
+	write(fd, "\n", 1);
 }
+
+// int main()
+// {
+// 	ft_putendl_fd("truc de fou", 1);
+// }

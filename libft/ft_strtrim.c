@@ -3,65 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: handler <handler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/22 14:55:37 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/11/01 01:20:29 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/11/09 22:48:42 by handler           #+#    #+#             */
+/*   Updated: 2022/11/14 18:12:56 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	in(char const *s, char c)
+static int	in_sep(char *str, char sep)
 {
 	int	i;
 
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
+	i = -1;
+	while (str[++i])
+		if (str[i] == sep)
 			return (1);
-		i++;
-	}
 	return (0);
-}
-
-static int	ft_start(char const *s1, char const *s2)
-{
-	int	i;
-
-	i = 0;
-	while (s1[i])
-	{
-		if (!in(s2, s1[i]))
-			return (i);
-		i++;
-	}
-	return (i);
-}
-
-static int	ft_end(char const *s1, char const *s2)
-{
-	int	l1;
-
-	l1 = ft_strlen(s1);
-	while (l1 - 1 >= 0)
-	{
-		if (!in(s2, s1[l1 - 1]))
-			return (l1);
-		l1--;
-	}
-	return (l1);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	int	start;
-	int	end;
+	int		start;
+	int		end;
+	int		i;
+	char	*str;
 
 	if (!s1 || !set)
 		return (NULL);
-	start = ft_start(s1, set);
-	end = ft_end(s1, set);
-	return (ft_substr(s1, start, end - start));
+	start = 0;
+	while (s1[start] && in_sep((char *)set, s1[start]))
+		start++;
+	end = ft_strlen(s1) - 1;
+	while (end && in_sep((char *)set, s1[end]))
+		end--;
+	i = 0;
+	if (start > end)
+		return (ft_strdup(""));
+	str = malloc(sizeof(char) * (end - start + 2));
+	if (!str)
+		return (NULL);
+	while (start <= end)
+		str[i++] = s1[start++];
+	str[i] = '\0';
+	return (str);
 }
+
+// int main(void)
+// {
+//     char s1[] = "    x    x  xxxx   xxx   x x x x x x xxxx x x";
+//     printf("[%s]\n", ft_strtrim(s1, " x"));
+// }

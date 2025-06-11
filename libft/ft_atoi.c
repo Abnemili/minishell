@@ -3,47 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: handler <handler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/12 14:04:21 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/12/23 21:12:08 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/11/07 11:35:43 by handler           #+#    #+#             */
+/*   Updated: 2022/11/08 16:54:10 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_white_space(const char *str, int i)
+int	ft_atoi(const char *nptr)
 {
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
-		i++;
-	return (i);
-}
-
-int	ft_atoi(const char *str)
-{
-	int				i;
-	int				sign;
-	unsigned long	r;
+	int		nbr;
+	int		signe;
+	int		i;
+	char	*str;
 
 	i = 0;
-	sign = 1;
-	r = 0;
-	i = ft_white_space(str, i);
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign *= -1;
+	str = (char *)nptr;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
-	}
+	signe = 1;
+	if (str[i] == '+' || str[i] == '-')
+		if (str[i++] == '-')
+			signe = -signe;
+	nbr = 0;
 	while (str[i] >= '0' && str[i] <= '9')
-	{
-		r *= 10;
-		r += (str[i] - '0');
-		if ((r > 9223372036854775807) && (sign == 1))
-			return (-1);
-		if ((r > 9223372036854775807) && (sign == -1))
-			return (0);
-		i++;
-	}
-	return (r * sign);
+		nbr = nbr * 10 + (str[i++] - 48);
+	return (nbr * signe);
 }
+
+// #include <stdio.h>
+// 
+// int main()
+// {
+	// printf("%d\n", ft_atoi("-2147483648"));
+// }

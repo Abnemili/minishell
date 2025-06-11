@@ -3,40 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: handler <handler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/13 11:04:14 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/11/05 08:08:13 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/11/08 14:08:53 by handler           #+#    #+#             */
+/*   Updated: 2022/11/09 13:54:42 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memmove(void *destination, const void *source, size_t size)
 {
-	char	*d;
-	char	*s;
-	size_t	i;
+	size_t			i;
+	unsigned char	*d;
+	unsigned char	*s;
 
-	d = (char *)dst;
-	s = (char *)src;
-	if (!s && !d)
-		return ("");
-	if (s == d)
-		return (s);
-	i = 0;
+	d = (unsigned char *) destination;
+	s = (unsigned char *) source;
+	i = -1;
 	if (d > s)
-	{
-		while (len-- > 0)
-			d[len] = s[len];
-	}
+		while (size-- > 0)
+			d[size] = s[size];
 	else
-	{
-		while (i < len)
-		{
+		while (++i < size)
 			d[i] = s[i];
-			i++;
-		}
-	}
-	return (dst);
+	return (destination);
 }
+// 
+// int main(void)
+// {
+	// char sResult[] = {67, 68, 67, 68, 69, 0, 45};
+	// char *dest = ft_memmove(sResult + 1, sResult, 2);
+	// printf("%s\n", dest);
+// }

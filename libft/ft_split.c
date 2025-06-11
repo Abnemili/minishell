@@ -3,95 +3,106 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: handler <handler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/22 23:52:22 by mmoumani          #+#    #+#             */
-/*   Updated: 2023/04/12 00:25:28 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/11/10 09:30:27 by handler           #+#    #+#             */
+/*   Updated: 2023/01/16 15:31:24 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_nword(char const *s, char c)
+static int	count_word(char *s, char c)
 {
-	int	len;
-	int	n;
 	int	i;
+	int	count;
 
-	n = 0;
 	i = 0;
-	len = ft_strlen(s);
-	while (i < len)
+	count = 0;
+	while (s[i])
 	{
 		while (s[i] == c)
 			i++;
-		if (s[i] != c && s[i])
-			n++;
-		while (s[i] && (s[i] != c))
+		if (s[i])
+			count++;
+		while (s[i] && s[i] != c)
 			i++;
-		i++;
 	}
-	return (n);
+	return (count);
 }
 
-static int	ft_lenword(char const *s, char c)
+static char	**free_maloc(char **tab, int i)
 {
-	int	i;
-
-	i = 0;
-	while (s[i] && s[i] != c)
-		i++;
-	return (i);
-}
-
-void	*ft_free(char **s, int j)
-{
-	int	i;
-
-	i = 0;
-	while (i < j)
+	while (tab[i] != NULL && i >= 0)
 	{
-		free(s[i]);
-		i++;
+		free(tab[i]);
+		i--;
 	}
-	free(s);
+	free(tab);
 	return (NULL);
 }
 
-static int	ft_skeep(char const *s, char c)
+static char	*between(char *str, char c, int index)
+{
+	char	*word;
+	int		start;
+	int		j;
+	int		tmp;
+
+	start = index;
+	tmp = ft_strlen(str);
+	while (str[index] != c && index < tmp)
+		index++;
+	if (index == start)
+		return (NULL);
+	word = malloc(sizeof(char) * (index - start + 1));
+	if (!word)
+		return (NULL);
+	j = 0;
+	while (start < index)
+	{
+		word[j] = str[start];
+		j++;
+		start++;
+	}
+	word[j] = '\0';
+	return (word);
+}
+
+static char	**make(char **res, char *s, char c, int len)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	while (s[i] && s[i] == c)
-		i++;
-	return (i);
+	j = 0;
+	while (s[i] && j <= len)
+	{
+		while (s[i] == c)
+			i++;
+		if (s[i])
+		{
+			res[j] = between(s, c, i);
+			if (!res[j])
+				return (free_maloc(res, j));
+			j++;
+		}
+		while (s[i] != c && s[i])
+			i++;
+	}
+	res[j] = 0;
+	return (res);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**s2;
-	int		i;
-	int		j;
+	char	**res;
+	int		len;
 
-	i = -1;
-	if (!s)
+	len = count_word((char *)s, c);
+	res = malloc(sizeof(char *) * (len + 1));
+	if (!res)
 		return (NULL);
-	s2 = ft_calloc((ft_nword(s, c) + 1), sizeof(char *));
-	if (!s2)
-		return (NULL);
-	while (*s)
-	{
-		s += ft_skeep(s, c);
-		if ((*s != c) && *s)
-		{
-			j = 0;
-			s2[++i] = ft_calloc(ft_lenword(s, c) + 1, sizeof(char));
-			if (!s2[i])
-				return (ft_free(s2, i));
-			while (*s && *s != c)
-				s2[i][j++] = *s++;
-		}
-	}
-	return (s2);
+	res = make(res, (char *)s, c, len);
+	return (res);
 }

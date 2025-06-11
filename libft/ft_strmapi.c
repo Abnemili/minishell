@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmoumani <mmoumani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: handler <handler@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/26 02:32:38 by mmoumani          #+#    #+#             */
-/*   Updated: 2022/11/06 22:14:39 by mmoumani         ###   ########.fr       */
+/*   Created: 2022/11/10 16:57:49 by handler           #+#    #+#             */
+/*   Updated: 2022/11/11 14:17:20 by handler          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,21 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	unsigned int	i;
-	unsigned int	len;
-	char			*r;
+	char	*str;
+	size_t	i;
 
-	if (s == NULL || f == NULL)
-		return (NULL);
 	i = 0;
-	len = ft_strlen(s);
-	r = malloc((len + 1) * sizeof(char));
-	if (!r)
+	while (s[i])
+		++i;
+	str = malloc(sizeof(char) * (i + 1));
+	if (!str || !s || !f)
 		return (NULL);
-	while (i < len)
-	{
-		r[i] = f(i, s[i]);
-		i++;
-	}
-	r[i] = '\0';
-	return (r);
+	i = -1;
+	while (s[++i])
+		str[i] = s[i];
+	str[i] = '\0';
+	i = -1;
+	while (str[++i])
+		str[i] = f(i, str[i]);
+	return (str);
 }
