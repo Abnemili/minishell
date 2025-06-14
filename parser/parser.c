@@ -1,47 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 11:24:50 by abnemili          #+#    #+#             */
+/*   Updated: 2025/06/13 14:07:02 by abnemili         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int		parse_pipeline(t_data *data);
-t_cmd	*parse_command(t_data *data, t_elem **current);
-int		parse_arguments(t_data *data, t_elem **current, t_cmd *cmd);
-int		handle_redirection_in(t_data *data, t_elem **current, t_cmd *cmd);
-int		handle_redirection_out(t_data *data, t_elem **current, t_cmd *cmd);
-int		handle_redirection_append(t_data *data, t_elem **current, t_cmd *cmd);
-int		handle_heredoc(t_data *data, t_elem **current, t_cmd *cmd);
-void	skip_whitespace_ptr(t_elem **current);
-int		count_command_args(t_elem *start);
-int		is_redirection_target(t_elem *elem, t_elem *start);
-int		allocate_cmd_args(t_cmd *cmd, int arg_count);
-int		process_word_token(t_data *data, t_elem **current, t_cmd *cmd, int *arg_index);
-int		process_redirection(t_data *data, t_elem **current, t_cmd *cmd);
-
-int parse_pipeline(t_data *data)
+// Add safety checks to parse_pipeline
+int	parse_pipeline(t_data *data)
 {
 	t_elem	*current;
 	t_cmd	*current_cmd;
 	t_cmd	*last_cmd;
 
+	if (!data || !data->elem)
+		return (0);
+		
 	current = data->elem;
 	data->head = NULL;
 	last_cmd = NULL;
+	
 	while (current)
 	{
 		skip_whitespace_ptr(&current);
 		if (!current)
 			break;
-		if (current->type == PIPE_LINE)//the current tokon is pipe 
+			
+		if (current->type == PIPE_LINE)
 		{
-			current = current->next; // skip it
+			current = current->next;
 			skip_whitespace_ptr(&current);
+			if (!current) // Pipe at end of input
+				return (0);
 			continue;
 		}
+		
 		current_cmd = parse_command(data, &current);
 		if (!current_cmd)
-				data->head = current_cmd;
+			return (0);
+			
+		if (!data->head)
+			data->head = current_cmd;
 		else
-			last_cmd->next = current_cmd; // add it to the list
-		last_cmd = current_cmd;// update thid ot poiint to the last one 
+			last_cmd->next = current_cmd;
+		last_cmd = current_cmd;
 	}
-	return (1);
+	
+	return (data->head != NULL); // Return 0 if no commands were parsed
 }
 
 t_cmd	*parse_command(t_data *data, t_elem **current)

@@ -8,18 +8,19 @@
 	--> in porgres : 
 		. parse pipe line:
 			--> parse commands 			// done
-				--> parse arguments		// in progress
+				--> parse arguments		// done
 					--> count command arguments		// done
 					--> allocate command arguments 	// done
 					--> process word token          // done
-					--> process redirectoins        // not touched
+					--> process redirectoins        /  done
 					------> handle the in file // done
 					------> handle the out file //done
 					------> handle the dredirectiono append // done 
 					------> handle heredoc ??
 
-current task : process the redirection and handle every single one of Them
+current task : print the command  linked list 
 
+19 / 06 : all done -> needs to merge
 
 
 

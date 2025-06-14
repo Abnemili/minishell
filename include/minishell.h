@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:36:40 by abnemili          #+#    #+#             */
-/*   Updated: 2025/05/23 10:29:45 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:29:26 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ int		process_token(t_elem *curr, enum e_state *state, t_elem **prev_significant)
 int		check_syntax(t_elem *token);
 
 // parser file functions 
-int	parse_pipeline(t_data *data);
+int		parse_pipeline(t_data *data);
 t_cmd	*parse_command(t_data *data, t_elem **current);
 int		parse_arguments(t_data *data, t_elem **current, t_cmd *cmd);
 int		handle_redirection_in(t_data *data, t_elem **current, t_cmd *cmd);
@@ -192,30 +192,6 @@ int		process_word_token(t_data *data, t_elem **current, t_cmd *cmd, int *arg_ind
 int		process_redirection(t_data *data, t_elem **current, t_cmd *cmd);
 
 
-
-// t_elem	*create_token(char *content, enum e_type type, enum e_state state);
-// void	append_token(t_elem **head, t_elem *new);
-// t_elem *init_tokens(char *input);
-// void	handle_quote(const char *input, int *i, t_elem **head);
-// int handle_redirections(const char *input, int i, t_elem **head);
-// int handle_word(const char *input, int i, t_elem **head);
-// void print_tokens(t_elem *head);
-// const char *get_type_str(enum e_type type);
-// int handle_env(const char *input, int *i, t_elem **head);
-// int check_syntax(t_elem *token);
-// int is_redirection(enum e_type  type);
-// int parse_input(char *input);
-
-// // expanding
-
-// void expand_tokens(t_elem *tokens, char **envp);
-// char *expnade_variable(const char *input, char **env, int state);
-// char *get_env_value(const char *var_name, char **env);
-
-
-
-
-// // helper functions 
-// char *ft_strndup(const char *s, size_t n);
-
+void print_pipeline_debug(t_data *data);
+void print_pipeline_compact(t_data *data);
 #endif

@@ -6,13 +6,13 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 11:14:24 by abnemili          #+#    #+#             */
-/*   Updated: 2025/06/10 15:49:53 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:33:49 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int handel_redirection_in(t_data *data, t_elem **current, t_cmd *cmd)
+int handle_redirection_in(t_data *data, t_elem **current, t_cmd *cmd)
 {
     int fd;
     

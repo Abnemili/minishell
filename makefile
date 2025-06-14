@@ -9,7 +9,8 @@ LDFLAGS = -lreadline
 SRC = main.c \
 	  lexer/init.c lexer/tokens.c lexer/lexer.c \
 	  parser/parsing.c parser/utils.c parser/check_syntax.c \
-	  parser/syntax_utils.c 
+	  parser/syntax_utils.c parser/handel_redirections.c parser/handle_heredoc.c \
+	  parser/parser_utils.c  parser/parser.c
 OBJ = $(SRC:.c=.o)
 
 # Libft

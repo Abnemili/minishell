@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 10:21:14 by abnemili          #+#    #+#             */
+/*   Updated: 2025/06/13 14:06:07 by abnemili         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 // a helper funcitons for the parser process
@@ -7,7 +19,7 @@ void skip_whitespace_ptr(t_elem **current)
 	while (*current && (*current)->type == WHITE_SPACE)
 		*current = (*current)->next;
 }
-int count_command_wrgs(t_elem **start)
+int count_command_args(t_elem *start)
 {
 	int		count;
 	t_elem *current;
@@ -36,7 +48,7 @@ int allocate_cmd_args(t_cmd *cmd, int arg_count)
 	return (1);
 }
 
-int processe_word_token(t_data *data, t_elem **current, t_cmd *cmd, int *arg_index)
+int process_word_token(t_data *data, t_elem **current, t_cmd *cmd, int *arg_index)
 {
 	if (cmd->full_cmd && !is_redirection_target(*current, data->elem))
 	{
@@ -48,30 +60,58 @@ int processe_word_token(t_data *data, t_elem **current, t_cmd *cmd, int *arg_ind
 	}
 	return (1);
 }
-int is_redirection_targdet(t_elem *elem, t_elem *start)
+int	is_redirection_target(t_elem *elem, t_elem *start)
 {
 	t_elem	*current;
 	t_elem	*prev;
 
+	if (!elem || !start)
+		return (0);
+		
 	current = start;
 	prev = NULL;
-	while (current && current != elem)
+	// Find the element and its previous non-whitespace token
+	while (current)
 	{
-		if (current->next == elem)
+		if (current == elem)
+			break;
+		if (current->type != WHITE_SPACE)
 			prev = current;
 		current = current->next;
 	}
-	if (!prev)
+	
+	// If we didn't find the element or there's no previous token
+	if (!current || !prev)
 		return (0);
-	while (prev && prev->type == WHITE_SPACE)
-	{
-		current = start;
-		while (current && current->next != prev)
-			current = current->next;
-		prev = current;
-	}
-	if (!prev)
-		return (0);
+	
+	// Check if previous token is a redirection operator
 	return (prev->type == REDIR_IN || prev->type == REDIR_OUT ||
-				prev->type == DREDIR_OUT || HERE_DOC);
+			prev->type == DREDIR_OUT || prev->type == HERE_DOC);
 }
+// int is_redirection_target(t_elem *elem, t_elem *start)
+// {
+// 	t_elem	*current;
+// 	t_elem	*prev;
+
+// 	current = start;
+// 	prev = NULL;
+// 	while (current && current != elem)
+// 	{
+// 		if (current->next == elem)
+// 			prev = current;
+// 		current = current->next;
+// 	}
+// 	if (!prev)
+// 		return (0);
+// 	while (prev && prev->type == WHITE_SPACE)
+// 	{
+// 		current = start;
+// 		while (current && current->next != prev)
+// 			current = current->next;
+// 		prev = current;
+// 	}
+// 	if (!prev)
+// 		return (0);
+// 	return (prev->type == REDIR_IN || prev->type == REDIR_OUT ||
+// 				prev->type == DREDIR_OUT || prev->type == HERE_DOC);
+// }
