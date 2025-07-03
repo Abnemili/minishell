@@ -5,7 +5,7 @@ check_syntax :
     --> helper.c            : done
     --> syntax_check_utils.c : done
 
-clean up :                  // done for norminette 
+clean up :                  
     --> ft+clean_up
 
 execution :
