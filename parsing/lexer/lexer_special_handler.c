@@ -6,13 +6,14 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:07:59 by abnemili          #+#    #+#             */
-/*   Updated: 2025/06/27 13:42:53 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/07/03 22:32:53 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	process_single_char_token(t_lexer *lexer, t_elem **head, char c, enum e_type type)
+int	process_single_char_token(t_lexer *lexer, t_elem **head, char c,
+		enum e_type type)
 {
 	char	*content;
 	t_elem	*token;
