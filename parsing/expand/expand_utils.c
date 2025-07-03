@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 11:41:15 by abnemili          #+#    #+#             */
-/*   Updated: 2025/07/03 14:41:59 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/07/03 20:40:41 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*remove_quotes(char *content, enum e_type quote_type)
 	return (ft_strdup(content));
 }
 
- void	handle_quoted_token(t_elem *curr, int exit_code)
+void	handle_quoted_token(t_elem *curr, int exit_code)
 {
 	char	*unq;
 	char	*exp;
@@ -73,8 +73,8 @@ int	process_dollar_expansion(char *content, int *i, t_expand_data *data)
 		*i = var_end;
 		return (1);
 	}
-	if (!(*(data->res) = realloc_result(*(data->res), data->max, *(data->len)
-				+ 2)))
+	*(data->res) = realloc_result(*(data->res), data->max, *(data->len) + 2);
+	if (!(*(data->res)))
 		return (0);
 	(*(data->res))[(*(data->len))++] = '$';
 	return (1);
@@ -95,6 +95,7 @@ char	*realloc_result(char *result, int *max_size, int needed)
 	}
 	return (new_result);
 }
+
 int	handle_special_var(char *name, int exit_code, char **value)
 {
 	if (strcmp(name, "?") == 0)

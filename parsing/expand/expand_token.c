@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 14:35:36 by abnemili          #+#    #+#             */
-/*   Updated: 2025/07/03 14:44:13 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/07/03 20:38:47 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,21 @@ extern t_env	*g_envp;
 
 int	process_regular_char(char *content, int *i, t_expand_data *data)
 {
-	if (!(*(data->res) = realloc_result(*(data->res), data->max, *(data->len)
-				+ 2)))
+	char	*new_res;
+
+	new_res = realloc_result(*(data->res), data->max, *(data->len) + 2);
+	if (!new_res)
 		return (0);
+	*(data->res) = new_res;
 	(*(data->res))[(*(data->len))++] = content[(*i)++];
 	return (1);
 }
 
 int	process_expansion_loop(char *content, t_expand_data *data)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (content[i])
 	{
 		if (content[i] == '$')
@@ -44,13 +48,16 @@ int	process_expansion_loop(char *content, t_expand_data *data)
 char	*expand_token_content(char *content, int exit_code, int should_expand)
 {
 	char			*res;
-	int				len = 0;
-	int				max = 1024;
+	int				len;
+	int				max;
 	t_expand_data	data;
 
+	len = 0;
+	max = 1024;
 	if (!content || !should_expand)
 		return (ft_strdup(content));
-	if (!(res = malloc(max)))
+	res = malloc(max);
+	if (!res)
 		return (NULL);
 	data = (t_expand_data){&res, &len, &max, exit_code};
 	if (!process_expansion_loop(content, &data))
@@ -87,8 +94,3 @@ void	expand_tokens(t_elem *token, int exit_code)
 		curr = curr->next;
 	}
 }
-
-
-
-
-
