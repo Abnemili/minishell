@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 22:45:07 by abnemili          #+#    #+#             */
-/*   Updated: 2025/06/27 14:32:33 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:29:22 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	handle_quote(const char *input, int *i, t_elem **head)
 	int				start;
 
 	quote = input[(*i)++];
-	state = (quote == '\'') ? IN_QUOTE : IN_DQUOTE;
+	if (quote == '\'')
+		state = IN_QUOTE;
+	else
+		state = IN_DQUOTE;
 	start = *i;
 	while (input[*i] && input[*i] != quote)
 		(*i)++;

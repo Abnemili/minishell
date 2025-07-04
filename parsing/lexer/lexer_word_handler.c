@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 22:13:06 by abnemili          #+#    #+#             */
-/*   Updated: 2025/06/27 14:23:49 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:39:08 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int	handle_word(const char *input, int i, t_elem **head)
 	t_elem	*token;
 
 	start = i;
-	while (input[i] && input[i] != ' ' && input[i] != '\t' &&
-		input[i] != '|' && input[i] != '<' && input[i] != '>' &&
-		input[i] != '\'' && input[i] != '\"')
+	while (input[i] && input[i] != ' ' && input[i] != '\t'
+		&& input[i] != '|' && input[i] != '<' && input[i] != '>'
+		&& input[i] != '\'' && input[i] != '\"')
 		i++;
 	if (i > start)
 	{
@@ -86,9 +86,11 @@ void	merge_adjacent_word_tokens(t_elem **head)
 	while (curr && curr->next)
 	{
 		next = curr->next;
-		if (curr->type == WORD && next->type == WORD &&
-			((curr->state == GENERAL || curr->state == IN_QUOTE || curr->state == IN_DQUOTE) &&
-			 (next->state == GENERAL || next->state == IN_QUOTE || next->state == IN_DQUOTE)))
+		if (curr->type == WORD && next->type == WORD
+			&& ((curr->state == GENERAL || curr->state == IN_QUOTE
+					|| curr->state == IN_DQUOTE)
+				&& (next->state == GENERAL || next->state == IN_QUOTE
+					|| next->state == IN_DQUOTE)))
 		{
 			merged = ft_strjoin(curr->content, next->content);
 			if (!merged)

@@ -6,7 +6,7 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:17:58 by abnemili          #+#    #+#             */
-/*   Updated: 2025/07/01 14:18:52 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/07/04 15:55:28 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	parse_input(t_elem *token, char *input, t_lexer *lexer)
 		return (0);
 	if (!check_syntax(token))
 		return (0);
-	print_tokens(token);
 	return (1);
 }
 
@@ -78,72 +77,4 @@ char	*get_sredir_error(t_elem *curr)
 		}
 	}
 	return ("newline");
-}
-
-
-
-
-
-
-
-
-
-
-// Map enum e_type 0to string
-const char	*get_type_str(enum e_type type)
-{
-	switch (type)
-	{
-	case WORD:
-		return ("WORD");
-	case WHITE_SPACE:
-		return ("WHITE_SPACE");
-	case REDIR_IN:
-		return ("REDIR_IN");
-	case REDIR_OUT:
-		return ("REDIR_OUT");
-	case DREDIR_OUT:
-		return ("DREDIR_OUT");
-	case HERE_DOC:
-		return ("HERE_DOC");
-	case PIPE_LINE:
-		return ("PIPE_LINE");
-	case QUOTE:
-		return ("QUOTE");
-	case ENV:
-		return ("ENV");
-	case DQUOTE:
-		return ("DQUOTE");
-	case EXIT_STATUS:
-		return ("EXIT_STATUS");
-	default:
-		return ("(unknown)");
-	}
-}
-
-// Map enum e_state to string safely
-const char	*get_state_str(enum e_state state)
-{
-	switch (state)
-	{
-	case GENERAL:
-		return ("GENERAL");
-	case IN_QUOTE:
-		return ("IN_QUOTE");
-	case IN_DQUOTE:
-		return ("IN_DQUOTE");
-	default:
-		return ("UNKNOWN_STATE");
-	}
-}
-
-// Print all tokens in the list
-void	print_tokens(t_elem *head)
-{
-	while (head)
-	{
-		printf("Content: %-15s | Type: %-12s | State: %-10s\n", head->content,
-			get_type_str(head->type), get_state_str(head->state));
-		head = head->next;
-	}
 }

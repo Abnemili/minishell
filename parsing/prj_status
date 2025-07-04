@@ -1,35 +1,35 @@
 check_syntax :
-    --> check_syntax.c      	: done
-    --> redirection_error.c 	: done
+    --> check_syntax.c      	: ok!
+    --> redirection_error.c 	: ok!
     --> validate_syntax.c   	: forbiden use and line to loong 
-    --> helper.c            	: done
-    --> syntax_check_utils.c 	: done
+    --> helper.c            	: ok!
+    --> syntax_check_utils.c 	: ok!
 
 clean up :                  
-    --> ft+clean_up		: ok
+    --> ft+clean_up		: ok!
 
 execution :
     --> exec_env           	: globale variabele 
 
 expande :
-    --> env_var			: done but the globale variable 
-    --> env_var_utils		: same
-    --> rempve_quote		: same 
+    --> env_var			    : Global variable present in file 
+    --> env_var_utils		: Global variable present in file
+    --> rempve_quote		: Global variable present in file
 
 includes : 
     --> minishell.h		: function has more than 4 argums 
 
 lexer :
-    --> lexer_init.c		: done
-    --> lexer_utils.c		: function has 27 line
-    --> lexer_special_handler.c	:
-    --> lexer_word_handler.c
+    --> lexer_init.c		: ok!
+    --> lexer_utils.c		: 25 line / 4 arguments
+    --> lexer_special_handler.c	: function has 27 line
+    --> lexer_word_handler.c   	: 25 line / 4 arguments
 
 parser : 
-    --> handle_heredoc.c
-    --> parser.c
-    --> handle_redirections.c
-    --> parser_utils.c
+    --> handle_heredoc.c        : Function has more than 25 lines
+    --> parser.c                : Function has more than 25 lines
+    --> handle_redirections.c   : ok!
+    --> parser_utils.c          : ok!
 
 -> debuging.c :
 -> main.c

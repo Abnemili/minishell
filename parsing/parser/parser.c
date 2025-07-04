@@ -6,12 +6,11 @@
 /*   By: abnemili <abnemili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:24:50 by abnemili          #+#    #+#             */
-/*   Updated: 2025/06/29 11:37:06 by abnemili         ###   ########.fr       */
+/*   Updated: 2025/07/04 15:31:28 by abnemili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	parse_pipeline(t_data *data)
 {
@@ -28,14 +27,14 @@ int	parse_pipeline(t_data *data)
 	{
 		skip_whitespace_ptr(&current);
 		if (!current)
-			break;
+			break ;
 		if (current->type == PIPE_LINE)
 		{
 			current = current->next;
 			skip_whitespace_ptr(&current);
 			if (!current)
 				return (0);
-			continue;
+			continue ;
 		}
 		current_cmd = parse_command(data, &current);
 		if (!current_cmd)
@@ -52,7 +51,6 @@ int	parse_pipeline(t_data *data)
 	return (data->head != NULL);
 }
 
-// Fixed memory cleanup on failure
 t_cmd	*parse_command(t_data *data, t_elem **current)
 {
 	t_cmd	*cmd;
@@ -74,7 +72,6 @@ t_cmd	*parse_command(t_data *data, t_elem **current)
 	return (cmd);
 }
 
-// Fixed argument parsing with better error handling
 int	parse_arguments(t_data *data, t_elem **current, t_cmd *cmd)
 {
 	int	arg_count;
@@ -90,8 +87,7 @@ int	parse_arguments(t_data *data, t_elem **current, t_cmd *cmd)
 	{
 		skip_whitespace_ptr(current);
 		if (!*current || (*current)->type == PIPE_LINE)
-			break;
-		// Handle both WORD and ENV tokens as arguments
+			break ;
 		if ((*current)->type == WORD || (*current)->type == ENV)
 		{
 			if (!process_word_token(data, current, cmd, &arg_index))
@@ -103,7 +99,6 @@ int	parse_arguments(t_data *data, t_elem **current, t_cmd *cmd)
 	return (1);
 }
 
-// Simplified redirection processing
 int	process_redirection(t_data *data, t_elem **current, t_cmd *cmd)
 {
 	if (!data || !current || !*current || !cmd)
